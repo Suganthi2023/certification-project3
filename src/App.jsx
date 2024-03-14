@@ -9,6 +9,7 @@ import {
  * Importing other components
  */
 import Home from './components/Home'
+import QuizHub from './components/QuizHub'
 import About from './components/About'
 
 const App = () => {
@@ -21,6 +22,9 @@ const App = () => {
               <Link to="/home">Home</Link>
             </li>
             <li>
+              <Link to="/quizhub">QuizHub</Link>
+            </li>
+            <li>
               <Link to="/about">About</Link>
             </li>
           </ul>
@@ -30,6 +34,7 @@ const App = () => {
             Furthermore, notice how the content above always renders? On each page? */}
         <Routes>
           <Route path="/home" element={<Home />} />
+          <Route path="/quizhub" element={<QuizHub/>}/>
           <Route path="/about" element={<About />} />
         </Routes>
       </div>
