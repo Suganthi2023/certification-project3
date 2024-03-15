@@ -34,7 +34,7 @@ const App = () => {
             Furthermore, notice how the content above always renders? On each page? */}
         <Routes>
           <Route path="/home" element={<Home />} />
-          <Route path="/quizhub" element={<QuizHub/>}/>
+          <Route path="*" element={<QuizHub/>}/>
           <Route path="/about" element={<About />} />
         </Routes>
       </div>
