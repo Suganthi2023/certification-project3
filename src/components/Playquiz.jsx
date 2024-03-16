@@ -8,7 +8,7 @@ function PlayQuiz({quiz}) {
             <div>
               This is to play game              
             </div>
-            <Link to ="/Game">
+            <Link to ="/QuizHub">
                 <button>Back to Hub</button>
             </Link>
 

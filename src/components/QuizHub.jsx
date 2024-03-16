@@ -95,7 +95,59 @@ function QuizHub() {
         }
     ])
 
-    //console.log(quizzes[0]);
+    console.log(quizzes);
+    const[newquiz,setNewQuiz]=useState({
+        name:'',
+        questions:[],
+    })
+
+    const handleformTyping=(e)=>{
+    //console.log(e.target.name,e.target.value);
+        const newuserQuiz={
+            ...newquiz,
+            [e.target.name]:e.target.value
+        }
+        setNewQuiz(newuserQuiz);
+    }
+
+    const [quesidcounter,setQuestidCounter]=useState(1);
+
+    const addQuestion=()=>{
+        const newQuestion={
+            quesid:quesidcounter,
+            question:"",
+            options:[],
+            correctanswer:"",
+            points:""
+        }
+        setNewQuiz({...newquiz,questions:[...newquiz.questions,newQuestion]});
+        setQuestidCounter(prevCounter=>prevCounter+1);
+    }
+
+    const handleQuestionTyping=(index,e)=>{
+        const newuserQuestions =[...newquiz.questions];
+        if(e.target.name === "options"){
+            newuserQuestions[index][e.target.name]=e.target.value.split(",").map((option)=>option.trim());
+        } else if(e.target.name === "points"){
+            newuserQuestions[index][e.target.name]=parseInt(e.target.value);
+        } else {
+            newuserQuestions[index][e.target.name]=e.target.value;
+        }
+        setNewQuiz({...newquiz,question:newuserQuestions})
+    }
+
+    const handleCreateQuiz=(e)=>{
+        e.preventDefault();
+        const nextId=quizzes.length+1
+        const newQuiz={
+            Quizid:nextId,
+            name:newquiz.name,
+            questions:newquiz.questions,
+            Highestscore:0
+        }
+        setQuizzes([...quizzes,newQuiz]);
+        setNewQuiz({name:"",questions:[]})
+    }
     
 return (
         <>  
@@ -125,7 +177,37 @@ return (
                     </Link>
                 </div>
             ))}
-            <Link to="/home">
+
+            <h3>Create your Own Quiz</h3>
+            <form onSubmit={handleCreateQuiz}>
+                <div>
+                    Quiz Name:<input type="text" name="name" value={newquiz.name} onChange={handleformTyping}/>
+                </div>
+                {newquiz.questions.map((question,index)=>
+                 <div key={index}>
+                        <h4>Question{question.quesid}</h4>
+                        <div>
+                            Question:<input type="text" name="question" 
+                            value={question.question} onChange={(e)=>handleQuestionTyping(index,e)}/>
+                        </div>
+                        <div>
+                            Options(Separate with ','):<input type="text" name="options"
+                            value={question.options} onChange={(e)=>handleQuestionTyping(index,e)}/>
+                        </div>
+                        <div>
+                            CorrectAnswer:<input type="text" name="correctanswer"
+                            value={question.correctanswer} onChange={(e)=>handleQuestionTyping(index,e)}/>
+                        </div>
+                        <div>
+                            Points:<input type="text" name="points"
+                            value={question.points} onChange={(e)=>handleQuestionTyping(index,e)}/>
+                        </div>
+                 </div>
+                )}
+                <button type="button" onClick={addQuestion}>Add Question</button>
+                <button type="submit">Submit</button>
+            </form>
+            <Link to="/">
                 <button>Back to Home</button>
             </Link>
         </div>

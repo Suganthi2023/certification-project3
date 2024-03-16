@@ -7,7 +7,7 @@ const About = () => {
         <h3>About Page</h3>
       <p>Hello</p>
       </div>
-      <Link to="/Home">
+      <Link to="/">
           <button>Back to Home</button>
       </Link>
     

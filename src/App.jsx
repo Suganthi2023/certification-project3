@@ -19,7 +19,7 @@ const App = () => {
         <nav>
           <ul>
             <li>
-              <Link to="/home">Home</Link>
+              <Link to="/">Home</Link>
             </li>
             <li>
               <Link to="/quizhub">QuizHub</Link>
@@ -33,7 +33,7 @@ const App = () => {
             renders the first one that matches the current URL.
             Furthermore, notice how the content above always renders? On each page? */}
         <Routes>
-          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="*" element={<QuizHub/>}/>
           <Route path="/about" element={<About />} />
         </Routes>

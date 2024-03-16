@@ -6,7 +6,7 @@ function EditQuiz() {
             <div>
             This is to Edit Game
             </div>
-            <Link to ="/Game">
+            <Link to ="/QuizHub">
                 <button>Back to Home</button>
             </Link>
 
