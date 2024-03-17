@@ -165,11 +165,48 @@ function QuizHub() {
             })
        })}
 
-    const editQuestion=(QuizId,newQuestion)=>{
+       const editQuestion=(QuizId,newQuestion)=>{
         console.log('We are currently looking at Quizid:',QuizId);
         console.log('The question that we are changing now',newQuestion.quesid);
+        setQuizzes(quizzes =>{
+            return quizzes.map(quiz =>{
+                if(quiz.Quizid===QuizId){
+                    const editedquestions = quiz.questions.map(question =>{
+                        if(question.quesid === newQuestion.quesid){
+                            return newQuestion;                            
+                        } else{
+                            //console.log(question);
+                            return question;
+                        }
+                      })
+                      //console.log({questions:editedquestions})
+                      return{...quiz,questions:editedquestions};
+                    }
+                    return quiz;
+                    })
+                })}
+    const deleteQuestion=(QuizId,DeletedQuestion)=>{
+        console.log('We are deleting this quiz:',QuizId);
+        console.log("we are deleting this question:",DeletedQuestion.quesid);
+        setQuizzes(quizzes =>{
+            return quizzes.map(quiz =>{
+                if(quiz.Quizid===QuizId){
+                    const newquestionset = quiz.questions.filter(question =>{
+                        if(question.quesid === DeletedQuestion.quesid){
+                            return false;
+                        }else{
+                            //console.log(question);
+                            return true;
+                        }
+                    })
+                        return {...quiz,questions:newquestionset};
+                } else {
+                    return quiz;
+                }
+            })
+        })
+    }       
 
-    }
 
     
 return (
@@ -183,7 +220,7 @@ return (
             {quizzes.map((quiz)=>(
                 <Route key={quiz.Quizid} path={`/QuizHub/${quiz.Quizid}/editquiz`} 
                 element={<EditQuiz quiz={quiz} quizId={quiz.Quizid} addquestion={addquestiontoquiz}
-                EditQuestion={editQuestion}/>}/>
+                EditQuestion={editQuestion} DeleteQuestion={deleteQuestion}/>}/>
             ))}
 
             

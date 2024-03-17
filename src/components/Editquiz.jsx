@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import {useState} from "react";
 
-function EditQuiz({quiz,quizId,addquestion,EditQuestion}) {
+function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
     //console.log(quiz.Quizid);
     //console.log(quiz.name);
     
@@ -48,7 +48,6 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion}) {
     }
 
     const[editedQuestion,setEditedQuestion] = useState({
-        quesid:"",
         question:"",
         options:[],
         correctanswer:"",
@@ -80,13 +79,25 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion}) {
         e.preventDefault();
          EditQuestion(quizId,editedQuestion)
         setEditedQuestion({
-            quesid:"",
             question:'',
             options:[],
             correctanswer:'',
             points:''
         })
     }
+
+    const handleDeleteQuestion=(question)=>{
+        const deletequestion={
+            quesid:question.quesid,
+            question:question.question,
+            options:question.options,
+            correctanswer:question.correctanswer,
+            points:question.points
+        }
+        DeleteQuestion(quizId,deletequestion);
+       
+    }
+    
     return (      
         
         <>
@@ -102,7 +113,7 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion}) {
                         ))}                        
                     </ul>
                     <button onClick={()=>handleEdit(question)}>Edit</button>
-                    <button>Delete</button> 
+                    <button onClick={()=>handleDeleteQuestion(question)}>Delete</button> 
                     <br/>
                     <br/>
                 </div>                          
@@ -142,7 +153,8 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion}) {
 
                 <button type="submit">Submit</button>
             </form>
-           </div>                 
+            </div>
+
             <Link to ="/QuizHub">
                 <button>Back to Home</button>
             </Link>
