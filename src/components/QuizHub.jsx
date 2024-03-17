@@ -110,18 +110,18 @@ function QuizHub() {
         setNewQuiz(newuserQuiz);
     }
 
-    const [quesidcounter,setQuestidCounter]=useState(1);
+    //const [quesidcounter,setQuestidCounter]=useState(1);
 
-    const addQuestion=()=>{
+    const addformfield=()=>{
         const newQuestion={
-            quesid:quesidcounter,
+            quesid:newquiz.questions.length+1,
             question:"",
             options:[],
             correctanswer:"",
             points:""
         }
         setNewQuiz({...newquiz,questions:[...newquiz.questions,newQuestion]});
-        setQuestidCounter(prevCounter=>prevCounter+1);
+       // setQuestidCounter(prevCounter=>prevCounter+1);
     }
 
     const handleQuestionTyping=(index,e)=>{
@@ -148,6 +148,29 @@ function QuizHub() {
         setQuizzes([...quizzes,newQuiz]);
         setNewQuiz({name:"",questions:[]})
     }
+
+    const addquestiontoquiz=(quiz,QuizId,newQuestion)=>{
+        console.log('we are currently looking at Quizid: ',quiz.Quizid);
+        setQuizzes(quizzes =>{
+            return quizzes.map(quiz =>{
+                if(quiz.Quizid===QuizId){
+                    //console.log(quiz.questions);        
+                    //console.log(newQuestion);
+                    //const newquestion = quiz.questions.concat(newQuestion)
+                    //console.log(newquestion);
+                    return{...quiz,questions:quiz.questions.concat(newQuestion)};
+                }else{
+                    return quiz;
+                }
+            })
+       })}
+
+    const editQuestion=(QuizId,newQuestion)=>{
+        console.log('We are currently looking at Quizid:',QuizId);
+        console.log('The question that we are changing now',newQuestion.quesid);
+
+    }
+
     
 return (
         <>  
@@ -158,7 +181,9 @@ return (
                 <Route key={quiz.Quizid} path={`/QuizHub/${quiz.Quizid}/playquiz`} element={<PlayQuiz quiz={quiz}/>}/>
             ))}
             {quizzes.map((quiz)=>(
-                <Route key={quiz.Quizid} path={`/QuizHub/${quiz.Quizid}/editquiz`} element={<EditQuiz quiz={quiz}/>}/>
+                <Route key={quiz.Quizid} path={`/QuizHub/${quiz.Quizid}/editquiz`} 
+                element={<EditQuiz quiz={quiz} quizId={quiz.Quizid} addquestion={addquestiontoquiz}
+                EditQuestion={editQuestion}/>}/>
             ))}
 
             
@@ -204,7 +229,7 @@ return (
                         </div>
                  </div>
                 )}
-                <button type="button" onClick={addQuestion}>Add Question</button>
+                <button type="button" onClick={addformfield}>Add Question</button>
                 <button type="submit">Submit</button>
             </form>
             <Link to="/">
