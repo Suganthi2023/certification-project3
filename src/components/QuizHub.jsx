@@ -14,21 +14,21 @@ function QuizHub() {
                     quesid:1,
                     question:"What is a group of crows called?",
                     options:["A killer","A Murder","Crows","Crowd"],
-                    correctanswer:"A killer",
+                    correctAnswer:"A killer",
                     points : 5
                 },
                 {
                     quesid:2,
                     question:"How many dots appear on a pair of dice?",
                     options:["42","24","12","6"],
-                    correctanswer:"42",
+                    correctAnswer:"42",
                     points: 5
                 },
                 {
                     quesid:3,
                     question:"Where is the strongest human muscle located?",
                     options:["Thighs","Head","Arms","Jaw"],
-                    correctanswser:"Jaw",
+                    correctAnswer:"Jaw",
                     points: 5
                 }
 
@@ -43,7 +43,7 @@ function QuizHub() {
                     quesid:1,
                     question:"What is the Capitol of Canada?",
                     options:["Toronto","Calgary","Ottawa","Vancouver"],
-                    correctanswer:"Ottawa",
+                    correctAnswer:"Ottawa",
                     points: 5
 
                 },
@@ -51,7 +51,7 @@ function QuizHub() {
                     quesid:2,
                     question:"On what continent would you find the world's largest desert?",
                     options:["Asia","Africa","America","Antartica"],
-                    correctanswer:"Antartica",
+                    correctAnswer:"Antartica",
                     points: 5
 
                 },
@@ -59,7 +59,7 @@ function QuizHub() {
                     quesid:3,
                     question:"Which country features a shipwreck on its national flag?",
                     options:["India","Bermuda","Malaysia","Singapore"],
-                    correctanswer:"Bermuda",
+                    correctAnswer:"Bermuda",
                     points:5
                 }
             ],
@@ -73,21 +73,21 @@ function QuizHub() {
                     quesid:1,
                     question:"Pink Ladies and Granny Smiths are types of what fruit?",
                     options:["Oranges","Bananas","Apples","Mangoes"],
-                    correctanswer:"Apples",
+                    correctAnswer:"Apples",
                     points:5
                 },
                 {
                     quesid:2,
                     question:"Which country drinks the most coffee?",
                     options:["Ireland","Denmark","Swedan","Finland"],
-                    correctanswer:"Finland",
+                    correctAnswer:"Finland",
                     points:5
                 },
                 {
                     quesid:3,
                     question:"where did sushi originate?",
                     options:["China","Japan","Dubai","USA"],
-                    correctanswer:"China",
+                    correctAnswer:"China",
                     points:5
                 }
             ],
@@ -148,6 +148,20 @@ function QuizHub() {
         setQuizzes([...quizzes,newQuiz]);
         setNewQuiz({name:"",questions:[]})
     }
+
+    const deleteQuiz = (Quizid)=>{
+        
+        console.log("The quiz getting deleted is:",Quizid)
+        const newquizzes = quizzes.filter((quiz)=>{
+            if (quiz.Quizid === Quizid){
+                return false;
+            } else {
+                return true;
+            }
+        })
+        setQuizzes(newquizzes);
+    }
+
 
     const addquestiontoquiz=(quiz,QuizId,newQuestion)=>{
         console.log('we are currently looking at Quizid: ',quiz.Quizid);
@@ -237,6 +251,7 @@ return (
                     <Link to={`/QuizHub/${quiz.Quizid}/editquiz`} >
                         <button> Edit </button>
                     </Link>
+                    <button onClick={()=>{deleteQuiz(quiz.Quizid)}}>Delete</button>
                 </div>
             ))}
 
