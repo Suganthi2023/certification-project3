@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-function PlayQuiz({quiz}) {
+function PlayQuiz({quiz,quizId,updateHighscore}) {
     
    //console.log({quiz});
    const[userAnswers,setUserAnswers]=useState({});
@@ -26,8 +26,12 @@ function PlayQuiz({quiz}) {
            if(userAnswer === correctanswer){
                newScore=newScore+question.points;
                
-           }
+           }           
        })
+       if(quiz.HighestScore<=newScore){
+            updateHighscore(quiz,quizId,newScore);
+        } 
+
        setScore(newScore);
        //console.log(newScore);
        setUserAnswers({});
@@ -60,6 +64,8 @@ function PlayQuiz({quiz}) {
                </div>
                <div>
                    Score:{score}
+                   <br/>
+                   HighestScore:{quiz.HighestScore}
                   
                </div>
             
