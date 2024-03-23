@@ -48,10 +48,11 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
     }
 
     const[editedQuestion,setEditedQuestion] = useState({
-        question:"",
-        options:[],
-        correctanswer:"",
-        points:""
+        equesid: '',
+        equestion:"",
+        eoptions:[],
+        ecorrectAnswer:"",
+        epoints:""
 
     })
 
@@ -60,10 +61,10 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
         console.log(e.target.name,e.target.value);
         const newEdit = {
             ...editedQuestion,[e.target.name]:e.target.value}
-            if(e.target.name === "options"){
+            if(e.target.name === "eoptions"){
                 newEdit[e.target.name] = e.target.value.split(",").map((option)=>option.trim());
-            } else if(e.target.name==="points"){
-                newEdit[e.target.name]=parseInt(e.target.value);
+            } else if(e.target.name==="epoints"){
+                newEdit[e.target.name]=((e.target.value).trim()===""||isNaN(parseInt(e.target.value))?'':parseInt(e.target.value));
             } else{
                 newEdit[e.target.name]=e.target.value;
             }
@@ -72,17 +73,33 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
         }
     
     const handleEdit = (question)=>{
-        setEditedQuestion(question);
+        setEditedQuestion({
+            equesid:question.quesid,
+            equestion:question.question,
+            eoptions:question.options,
+            ecorrectAnswer:question.correctAnswer,
+            epoints:question.points
+
+        });
+        console.log("the data type of pointse is:", typeof(pointse))
     }
 
     const handleEditQuestion=(e)=>{
         e.preventDefault();
-         EditQuestion(quizId,editedQuestion)
+        const neweditq ={
+            quesid:editedQuestion.equesid,
+            quesiton:editedQuestion.equestion,
+            options:editedQuestion.eoptions,
+            correctAnswer:editedQuestion.ecorrectAnswer,
+            points:editedQuestion.epoints
+        }
+         EditQuestion(quizId,neweditq)
         setEditedQuestion({
-            question:'',
-            options:[],
-            correctanswer:'',
-            points:''
+            equestid:'',
+            equestion:'',
+            eoptions:[],
+            ecorrectAnswer:'',
+            epoints:''
         })
     }
 
@@ -138,16 +155,16 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
             <form onSubmit={handleEditQuestion}>                        
                     
                         <div>
-                            Question:<input type="text" name="question" value={editedQuestion.question} onChange={handleEditInput}/>
+                            Question:<input type="text" name="equestion" value={editedQuestion.equestion} onChange={handleEditInput}/>
                         </div>
                         <div>
-                            Options:<input type="text" name="options" value={editedQuestion.options} onChange={handleEditInput}/>
+                            Options:<input type="text" name="eoptions" value={editedQuestion.eoptions} onChange={handleEditInput}/>
                         </div>
                         <div>
-                            CorrectAnswer:<input type="text" name="correctanswer" value={editedQuestion.correctanswer} onChange={handleEditInput}/>
+                            CorrectAnswer:<input type="text" name="ecorrectAnswer" value={editedQuestion.ecorrectAnswer} onChange={handleEditInput}/>
                         </div>
                         <div>
-                            Points:<input type="text" name="points" value={editedQuestion.points} onChange={handleEditInput}/>
+                            Points:<input type="text" name="epoints" value={editedQuestion.epoints} onChange={handleEditInput}/>
                         </div>
                                    
 

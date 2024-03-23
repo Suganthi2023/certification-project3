@@ -14,7 +14,7 @@ function QuizHub() {
                     quesid:1,
                     question:"What is a group of crows called?",
                     options:["A killer","A Murder","Crows","Crowd"],
-                    correctAnswer:"A killer",
+                    correctAnswer:"A Murder",
                     points : 5
                 },
                 {
@@ -102,6 +102,7 @@ function QuizHub() {
     })
 
     const handleformTyping=(e)=>{
+        e.preventDefault();
     //console.log(e.target.name,e.target.value);
         const newuserQuiz={
             ...newquiz,
@@ -143,19 +144,20 @@ function QuizHub() {
             Quizid:nextId,
             name:newquiz.name,
             questions:newquiz.questions,
-            Highestscore:0
+            HighestScore:0
         }
         setQuizzes([...quizzes,newQuiz]);
         setNewQuiz({name:"",questions:[]})
     }
 
-    const deleteQuiz = (Quizid)=>{
+    const deleteQuiz = (Quizid,Qname)=>{
         
-        console.log("The quiz getting deleted is:",Quizid)
+        console.log("The quiz getting deleted is:",Qname)
         const newquizzes = quizzes.filter((quiz)=>{
-            if (quiz.Quizid === Quizid){
+            if (quiz.name === Qname){
                 return false;
             } else {
+                localStorage.removeItem(Qname);
                 return true;
             }
         })
@@ -219,7 +221,58 @@ function QuizHub() {
                 }
             })
         })
-    }       
+    }   
+    
+    const highScoreupdate =(Quiz,Quizid,highscore)=>{
+        console.log("the current highestscore is:",Quiz.HighestScore);
+        console.log("this is quiz getting update:",Quizid);
+        console.log("this is the score getting updated:",highscore);
+        setQuizzes(quizzes=>{
+            return quizzes.map(quiz=>{
+                if(quiz.Quizid===Quizid){
+                   return {...quiz,HighestScore:highscore};
+                }
+                    return quiz;
+            })
+            
+        })
+    }
+
+    const saveTostorage=(Quiz)=>{
+        quizzes.forEach((quiz)=>{
+            if(quiz.Quizid===Quiz.Quizid){
+                localStorage.setItem(Quiz.name, JSON.stringify(Quiz))
+            }
+        });
+
+    };
+
+    const[typeNameload,setTypeNameload]=useState({
+        name:""
+    });
+
+    const[quiznotfound,setQuizNotfound]=useState('');
+
+    const handleUsertype=(e)=>{
+        e.preventDefault(); 
+        const typename ={
+            ...typeNameload,[e.target.name]:e.target.value
+        }       
+        setTypeNameload(typename);        
+    }
+
+    const loadFromstorage=(quiztoload)=>{       
+            console.log(quiztoload);       
+            
+            const storedquizzes= JSON.parse(localStorage.getItem(quiztoload));
+            if(storedquizzes){
+                setQuizzes([...quizzes,storedquizzes]);
+            }else{
+                setQuizNotfound(`Quiz "${quiztoload}" not found`);
+            }   
+            setTypeNameload({name:""})
+    }   
+
 
 
     
@@ -229,7 +282,8 @@ return (
         <Routes>
             
             {quizzes.map((quiz)=> (
-                <Route key={quiz.Quizid} path={`/QuizHub/${quiz.Quizid}/playquiz`} element={<PlayQuiz quiz={quiz}/>}/>
+                <Route key={quiz.Quizid} path={`/QuizHub/${quiz.Quizid}/playquiz`} 
+                element={<PlayQuiz quiz={quiz} quizId={quiz.Quizid} updateHighscore={highScoreupdate}/>}/>
             ))}
             {quizzes.map((quiz)=>(
                 <Route key={quiz.Quizid} path={`/QuizHub/${quiz.Quizid}/editquiz`} 
@@ -244,16 +298,25 @@ return (
             This is the Game Page
             {quizzes.map((quiz)=>(
                 <div key={quiz.Quizid}>
-                    <h3>{quiz.name}</h3>
+                    <h3>{quiz.Quizid}.{quiz.name}</h3>
                     <Link to={`/QuizHub/${quiz.Quizid}/playquiz`} >
                         <button> Play </button>
                     </Link>
                     <Link to={`/QuizHub/${quiz.Quizid}/editquiz`} >
                         <button> Edit </button>
                     </Link>
-                    <button onClick={()=>{deleteQuiz(quiz.Quizid)}}>Delete</button>
+                    <button onClick={()=>{deleteQuiz(quiz.Quizid,quiz.name)}}>Delete</button>
+                    <button onClick={()=>{saveTostorage(quiz)}}>Save</button>
                 </div>
             ))}
+
+            <div>
+            <h3>Enter the Quiz Name</h3>
+            <input type="text"  name="name" value={typeNameload.name} onChange={handleUsertype}/>
+            <button onClick={()=>{loadFromstorage(typeNameload.name)}}>Load</button>
+            <p>{quiznotfound}</p>
+            </div>
+
 
             <h3>Create your Own Quiz</h3>
             <form onSubmit={handleCreateQuiz}>
@@ -272,8 +335,8 @@ return (
                             value={question.options} onChange={(e)=>handleQuestionTyping(index,e)}/>
                         </div>
                         <div>
-                            CorrectAnswer:<input type="text" name="correctanswer"
-                            value={question.correctanswer} onChange={(e)=>handleQuestionTyping(index,e)}/>
+                            CorrectAnswer:<input type="text" name="correctAnswer"
+                            value={question.correctAnswer} onChange={(e)=>handleQuestionTyping(index,e)}/>
                         </div>
                         <div>
                             Points:<input type="text" name="points"
