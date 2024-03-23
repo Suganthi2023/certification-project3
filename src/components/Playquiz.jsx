@@ -49,8 +49,8 @@ function PlayQuiz({quiz,quizId,updateHighscore}) {
                    <h4>Question{question.quesid}</h4> 
                    <h5>{question.question}</h5>                   
                    <ul>
-                       {question.options.map((option,index)=> (
-                           <li key={index}>{option}</li>
+                       {question.options.map((option,quesid)=> (
+                           <li key={quesid}>{option}</li>
                        ))}                        
                    </ul>
                    <br/>

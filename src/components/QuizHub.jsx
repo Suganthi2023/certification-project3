@@ -118,7 +118,7 @@ function QuizHub() {
             quesid:newquiz.questions.length+1,
             question:"",
             options:[],
-            correctanswer:"",
+            correctAnswer:"",
             points:""
         }
         setNewQuiz({...newquiz,questions:[...newquiz.questions,newQuestion]});
