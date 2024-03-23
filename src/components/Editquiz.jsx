@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
 import {useState} from "react";
 
+//Functional Child Component - Which displays the list of questions with options to edit or delete
+//and form fields for adding or editing questions for the selected quiz. This component uses props and functions 
+//passed from the parent component for the above said operations.
 function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
     //console.log(quiz.Quizid);
     //console.log(quiz.name);
     
+    //setting a copy for the quesions form from the questoins array in quizzes state
     const[newQuestion,setNewQuestion]=useState({ 
         quesid:quiz.questions.length,       
         question:'',
@@ -13,6 +17,8 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
         points:''
     });
 
+    // To capture the value from the form field that user types when adding new questions(with options,points,correct answer)
+    // to update the copy state
     const handleInputType =(e)=>{
         e.preventDefault();
         console.log(e.target.name,e.target.value);
@@ -28,7 +34,8 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
         
         setNewQuestion(newQues);
         }
-
+    // when the submit button is clicked, this function gets activated, which calls the addquestion function from parent
+    // to add new question to the quiz
     const handleAddQuestion = (e)=>{
        e.preventDefault();
        const newques = {
@@ -47,6 +54,7 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
         })
     }
 
+    //copy of the state to store the edited question when the user edits.
     const[editedQuestion,setEditedQuestion] = useState({
         equesid: '',
         equestion:"",
@@ -56,6 +64,8 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
 
     })
 
+    // To capture the value from the form field that user types when editing existing questions(with options,points,correct answer)
+    // to update the editedQuestion state.
     const handleEditInput=(e)=>{
         e.preventDefault();
         console.log(e.target.name,e.target.value);
@@ -64,7 +74,7 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
             if(e.target.name === "eoptions"){
                 newEdit[e.target.name] = e.target.value.split(",").map((option)=>option.trim());
             } else if(e.target.name==="epoints"){
-                newEdit[e.target.name]=((e.target.value).trim()===""||isNaN(parseInt(e.target.value))?'':parseInt(e.target.value));
+                newEdit[e.target.name]=parseInt(e.target.value);
             } else{
                 newEdit[e.target.name]=e.target.value;
             }
@@ -72,6 +82,8 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
         setEditedQuestion(newEdit);
         }
     
+    // When the user clicks the edit button next to the question, this functions gets all the information
+    //(quesition, options, correctAnswer,points) for the question and fills the edit form for the user to edit.
     const handleEdit = (question)=>{
         setEditedQuestion({
             equesid:question.quesid,
@@ -84,6 +96,9 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
         console.log("the data type of pointse is:", typeof(pointse))
     }
 
+    //When the user press the submit button, this function gets activated which captures the edited question set,
+    // then calls the EditQuestion function from parent which in turn updates the questions for the corresponding quiz 
+    // in the quizzes in the parent state.
     const handleEditQuestion=(e)=>{
         e.preventDefault();
         const neweditq ={
@@ -103,6 +118,8 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
         })
     }
 
+    //When delete button is clicked, this function calls the DelteQuestion from the parent
+    //which deletes the questions from the quiz
     const handleDeleteQuestion=(question)=>{
         const deletequestion={
             quesid:question.quesid,
@@ -119,6 +136,8 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
         
         <>
             <div>
+                {/*UI to display the questions for the selected quiz for editing, deleting questions and buttons for the same
+                and form fields for adding and editing questions. */}
             This is to Edit Game
             {quiz.questions.map((question)=>(
                 <div key={question.quesid}>
@@ -135,7 +154,7 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
                     <br/>
                 </div>                          
             ))}
-            
+            {/*Form the user to new question to the quiz */}
             <form onSubmit={handleAddQuestion}>
                 <div>
                     Question:<input type="text" name="question" value={newQuestion.question} onChange={handleInputType}/>
@@ -151,7 +170,7 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
                 </div>
                 <button type="submit">Submit</button>      
             </form> 
-
+            {/*Form for the user to edit an existing question in the quiz */}
             <form onSubmit={handleEditQuestion}>                        
                     
                         <div>
@@ -171,7 +190,7 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
                 <button type="submit">Submit</button>
             </form>
             </div>
-
+            {/*Link to go back to the parent component */}
             <Link to ="/QuizHub">
                 <button>Back to Home</button>
             </Link>
