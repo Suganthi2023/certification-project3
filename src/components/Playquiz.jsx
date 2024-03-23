@@ -1,18 +1,29 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
+//functional component - child component
+//This displays the quiz selected by the user and lets the user to play the quiz.when answers are
+//submitted by the user, it calculates as well as checks and updates the highestore score which also
+//displays the same respectively.
 function PlayQuiz({quiz,quizId,updateHighscore}) {
     
    //console.log({quiz});
+
+   //State to keep track of user types answers for questions which is used to check the answers with 
+   //correct answer for the corresponding questions.
    const[userAnswers,setUserAnswers]=useState({});
+
+   //State to keep the score the quiz.
    const[score,setScore]=useState();
 
+   //Function to get the value from the field when the user types the answer and display it in the field.
    const handleAnswerType=(e,quesid)=>{
        e.preventDefault();
        const response= {...userAnswers,[quesid]:e.target.value};
        setUserAnswers(response);
    }
 
+   //Function to check the userAnswers with the correctAnswer for the each questions in the quiz
    const handleanswerCheck=()=>{
        let newScore=0;
       console.log("Quiz Object:",quiz);
@@ -28,10 +39,13 @@ function PlayQuiz({quiz,quizId,updateHighscore}) {
                
            }           
        })
+       //Condition to check whether the current score is higher than the highestscore so far obtained in the quiz.
+       //this condition calls the updateHighscore function from parent for this purpose and updates the highestscore accordingly 
+       //in the state in the parent component.
        if(quiz.HighestScore<=newScore){
             updateHighscore(quiz,quizId,newScore);
         } 
-
+        //updating the score state.
        setScore(newScore);
        //console.log(newScore);
        setUserAnswers({});
@@ -43,6 +57,7 @@ function PlayQuiz({quiz,quizId,updateHighscore}) {
    return (
        <>
            <div>
+            {/*UI to display the questions, answer form field, submit button, score and Highestscore */}
              <h2>{quiz.name}</h2> 
              {quiz.questions.map((question)=>(
                <div key={question.quesid}>
@@ -71,6 +86,7 @@ function PlayQuiz({quiz,quizId,updateHighscore}) {
             
 
            </div>
+           {/*Link to the parent component */}
            <Link to ="/QuizHub">
                <button>Back to Hub</button>
            </Link>

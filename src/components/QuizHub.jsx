@@ -5,7 +5,7 @@ import EditQuiz from "./Editquiz";
 import PlayQuiz from "./Playquiz";
 
 function QuizHub() {
-    const [quizzes,setQuizzes]= useState([
+    const [quizzes,setQuizzes]= useState([      //Intial State of the Quizzes. In this state we have predefined quizzes.
         {
             Quizid:1,
             name:"GeneralKnowledge",
@@ -96,11 +96,13 @@ function QuizHub() {
     ])
 
     console.log(quizzes);
+    //This is the copy of the part of the state which gets used to create a new quiz by the user
     const[newquiz,setNewQuiz]=useState({
         name:'',
         questions:[],
     })
 
+    //To handle the user typing in the form fields.
     const handleformTyping=(e)=>{
         e.preventDefault();
     //console.log(e.target.name,e.target.value);
@@ -111,8 +113,8 @@ function QuizHub() {
         setNewQuiz(newuserQuiz);
     }
 
-    //const [quesidcounter,setQuestidCounter]=useState(1);
-
+    //const [quesidcounter,setQuestidCounter]=useState(1); This one used during the form development stage
+    //This callback function is to add more questions set to the new quiz while creating and to set the copy of the state.
     const addformfield=()=>{
         const newQuestion={
             quesid:newquiz.questions.length+1,
@@ -124,7 +126,8 @@ function QuizHub() {
         setNewQuiz({...newquiz,questions:[...newquiz.questions,newQuestion]});
        // setQuestidCounter(prevCounter=>prevCounter+1);
     }
-
+    //This call back function is to check that options are seperated by commas and converting points to integer in order to calculate the score 
+    //when the quiz gets played.
     const handleQuestionTyping=(index,e)=>{
         const newuserQuestions =[...newquiz.questions];
         if(e.target.name === "options"){
@@ -137,6 +140,8 @@ function QuizHub() {
         setNewQuiz({...newquiz,question:newuserQuestions})
     }
 
+    //This function uses the above functions, copy of the state to create the new quiz and updates the 
+    //intial state of quizzes to reflect the addition to quizzes list.
     const handleCreateQuiz=(e)=>{
         e.preventDefault();
         const nextId=quizzes.length+1
@@ -150,6 +155,8 @@ function QuizHub() {
         setNewQuiz({name:"",questions:[]})
     }
 
+    //This function to delete the quiz from the state as well as from the local storage when the
+    //user click the delete button.
     const deleteQuiz = (Quizid,Qname)=>{
         
         console.log("The quiz getting deleted is:",Qname)
@@ -164,7 +171,8 @@ function QuizHub() {
         setQuizzes(newquizzes);
     }
 
-
+    //Call back function which gets passed to the Editquiz component through router
+    //in order to add new questions to the selected quiz
     const addquestiontoquiz=(quiz,QuizId,newQuestion)=>{
         console.log('we are currently looking at Quizid: ',quiz.Quizid);
         setQuizzes(quizzes =>{
@@ -181,6 +189,8 @@ function QuizHub() {
             })
        })}
 
+       //Call back function which gets passed to the Editquiz component through router
+       //in order for the user to edit the already existing questions in the selected quiz
        const editQuestion=(QuizId,newQuestion)=>{
         console.log('We are currently looking at Quizid:',QuizId);
         console.log('The question that we are changing now',newQuestion.quesid);
@@ -201,6 +211,8 @@ function QuizHub() {
                     return quiz;
                     })
                 })}
+    //call back function which gets passed to the Editquiz component through router in order
+    //for the user to delete questions from selected quiz
     const deleteQuestion=(QuizId,DeletedQuestion)=>{
         console.log('We are deleting this quiz:',QuizId);
         console.log("we are deleting this question:",DeletedQuestion.quesid);
@@ -223,6 +235,7 @@ function QuizHub() {
         })
     }   
     
+    //Call back function to update the HighestScore for the quiz that gets played by the user.
     const highScoreupdate =(Quiz,Quizid,highscore)=>{
         console.log("the current highestscore is:",Quiz.HighestScore);
         console.log("this is quiz getting update:",Quizid);
@@ -238,6 +251,7 @@ function QuizHub() {
         })
     }
 
+    //call back function to store the quiz in the local storage when the user clicks save button in the UI
     const saveTostorage=(Quiz)=>{
         quizzes.forEach((quiz)=>{
             if(quiz.Quizid===Quiz.Quizid){
@@ -247,12 +261,14 @@ function QuizHub() {
 
     };
 
+    //state to keep the name of the quiz type by the user which the user wants to load from the local storage
     const[typeNameload,setTypeNameload]=useState({
         name:""
     });
 
+    //state to keep the message that gets displayed in the UI when the quiz is not found in the localstorage 
     const[quiznotfound,setQuizNotfound]=useState('');
-
+    //call back function to capture the value fo the form field that user types.
     const handleUsertype=(e)=>{
         e.preventDefault(); 
         const typename ={
@@ -261,6 +277,8 @@ function QuizHub() {
         setTypeNameload(typename);        
     }
 
+    //call back function to the load the quiz from the local storage when the user clicks load button and this uses states typeNameload, quiznotfound 
+    // as well as handleUsertype.
     const loadFromstorage=(quiztoload)=>{       
             console.log(quiztoload);       
             
@@ -279,6 +297,7 @@ function QuizHub() {
 return (
         <>  
         <h3>DashBoard</h3>
+        {/*Dynamic routes to components which also passes the props to the child components*/}
         <Routes>
             
             {quizzes.map((quiz)=> (
@@ -295,6 +314,7 @@ return (
         </Routes>
         
         <div>
+            {/*The interface which displays the list of quiznames with buttons to play,edit,save and delete */}
             This is the Game Page
             {quizzes.map((quiz)=>(
                 <div key={quiz.Quizid}>
@@ -311,6 +331,7 @@ return (
             ))}
 
             <div>
+                {/*Form for the user to type in the name of the quiz to be loaded with load button */}
             <h3>Enter the Quiz Name</h3>
             <input type="text"  name="name" value={typeNameload.name} onChange={handleUsertype}/>
             <button onClick={()=>{loadFromstorage(typeNameload.name)}}>Load</button>
@@ -319,6 +340,7 @@ return (
 
 
             <h3>Create your Own Quiz</h3>
+                {/*Form with various inputs to create a new quiz */}
             <form onSubmit={handleCreateQuiz}>
                 <div>
                     Quiz Name:<input type="text" name="name" value={newquiz.name} onChange={handleformTyping}/>
@@ -347,6 +369,7 @@ return (
                 <button type="button" onClick={addformfield}>Add Question</button>
                 <button type="submit">Submit</button>
             </form>
+            {/* Link to go back to the Home page when button is clicked */}
             <Link to="/">
                 <button>Back to Home</button>
             </Link>
