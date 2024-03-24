@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import EditQuiz from "./Editquiz";
 import PlayQuiz from "./Playquiz";
 import { useDispatch,useSelector } from "react-redux";
-import {setQuizzes,createQuiz,quizDelete} from "../reducers/hubReducer";
+import {setQuizzes,createQuiz,quizDelete,storageLoad} from "../reducers/hubReducer";
 
 function QuizHub() {
   /*  const [quizzes,setQuizzes]= useState([      //Intial State of the Quizzes. In this state we have predefined quizzes.
@@ -183,7 +183,7 @@ function QuizHub() {
 
     //Call back function which gets passed to the Editquiz component through router
     //in order to add new questions to the selected quiz
-    const addquestiontoquiz=(quiz,QuizId,newQuestion)=>{
+   /* const addquestiontoquiz=(quiz,QuizId,newQuestion)=>{
         console.log('we are currently looking at Quizid: ',quiz.Quizid);
         setQuizzes(quizzes =>{
             return quizzes.map(quiz =>{
@@ -197,11 +197,11 @@ function QuizHub() {
                     return quiz;
                 }
             })
-       })}
+       })}*/
 
        //Call back function which gets passed to the Editquiz component through router
        //in order for the user to edit the already existing questions in the selected quiz
-       const editQuestion=(QuizId,newQuestion)=>{
+      /* const editQuestion=(QuizId,newQuestion)=>{
         console.log('We are currently looking at Quizid:',QuizId);
         console.log('The question that we are changing now',newQuestion.quesid);
         setQuizzes(quizzes =>{
@@ -220,10 +220,10 @@ function QuizHub() {
                     }
                     return quiz;
                     })
-                })}
+                })}*/
     //call back function which gets passed to the Editquiz component through router in order
     //for the user to delete questions from selected quiz
-    const deleteQuestion=(QuizId,DeletedQuestion)=>{
+   /* const deleteQuestion=(QuizId,DeletedQuestion)=>{
         console.log('We are deleting this quiz:',QuizId);
         console.log("we are deleting this question:",DeletedQuestion.quesid);
         setQuizzes(quizzes =>{
@@ -243,7 +243,7 @@ function QuizHub() {
                 }
             })
         })
-    }   
+    }   */
     
     //Call back function to update the HighestScore for the quiz that gets played by the user.
     /*const highScoreupdate =(Quiz,Quizid,highscore)=>{
@@ -294,7 +294,7 @@ function QuizHub() {
             
             const storedquizzes= JSON.parse(localStorage.getItem(quiztoload));
             if(storedquizzes){
-                setQuizzes([...quizzes,storedquizzes]);
+                dispatch(storageLoad({storedquizzes}));
             }else{
                 setQuizNotfound(`Quiz "${quiztoload}" not found`);
             }   
@@ -316,8 +316,7 @@ return (
             ))}
             {quizzes.map((quiz)=>(
                 <Route key={quiz.Quizid} path={`/QuizHub/${quiz.Quizid}/editquiz`} 
-                element={<EditQuiz quiz={quiz} quizId={quiz.Quizid} addquestion={addquestiontoquiz}
-                EditQuestion={editQuestion} DeleteQuestion={deleteQuestion}/>}/>
+                element={<EditQuiz quiz={quiz} quizId={quiz.Quizid}/>}/>
             ))}
 
             

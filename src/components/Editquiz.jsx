@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import {useState} from "react";
+import { useDispatch } from "react-redux";
+import {questionAdd,questionDelete,questionEdit} from "../reducers/hubReducer"
 
 //Functional Child Component - Which displays the list of questions with options to edit or delete
 //and form fields for adding or editing questions for the selected quiz. This component uses props and functions 
@@ -7,7 +9,7 @@ import {useState} from "react";
 function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
     //console.log(quiz.Quizid);
     //console.log(quiz.name);
-    
+    const dispatch=useDispatch();
     //setting a copy for the quesions form from the questoins array in quizzes state
     const[newQuestion,setNewQuestion]=useState({ 
         quesid:quiz.questions.length,       
@@ -45,7 +47,7 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
            correctanswer:newQuestion.correctanswer,
            points:newQuestion.points
        }              
-        addquestion(quiz,quizId,newques);
+        dispatch(questionAdd({quizId,newques}));
         setNewQuestion({
             question:'',
             options:[],
@@ -108,7 +110,7 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
             correctAnswer:editedQuestion.ecorrectAnswer,
             points:editedQuestion.epoints
         }
-         EditQuestion(quizId,neweditq)
+         dispatch(questionEdit({quizId,neweditq}));
         setEditedQuestion({
             equestid:'',
             equestion:'',
@@ -128,7 +130,7 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
             correctanswer:question.correctanswer,
             points:question.points
         }
-        DeleteQuestion(quizId,deletequestion);
+        dispatch(questionDelete({quizId,deletequestion}));
        
     }
     

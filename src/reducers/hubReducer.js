@@ -139,11 +139,80 @@ const hubSlice = createSlice({
                     }
                 })
             }
+        },
+        questionAdd(state,action){
+            console.log(action.payload);
+            const newques=action.payload.newques;
+            const quizId=action.payload.quizId;
+            console.log(newques);
+            console.log(quizId);
+            return{...state,
+                quizzes:state.quizzes.map(quiz=>{
+                    if(quiz.Quizid===quizId){
+                        return{...quiz,questions:quiz.questions.concat(newques)};
+                    }else{
+                        return quiz;
+                    }
+                })
+            }
+        },
+        questionDelete(state,action){
+            console.log(action.payload.deletequestion);
+            const deletequestion=action.payload.deletequestion;
+            const quizId=action.payload.quizId;
+            return{...state,
+                quizzes:state.quizzes.map(quiz=>{
+                    if(quiz.Quizid===quizId){
+                        const newquestion=quiz.questions.filter(question=>{
+                            if(question.quesid===deletequestion.quesid){
+                                return false;
+                            }else{
+                                return true;
+                            }
+                        })
+                        return {...quiz,questions:newquestion}
+                    }else{
+                        return quiz;
+                    }
+                })
+            }
+        },
+        questionEdit(state,action){
+            console.log(action);
+            const neweditq =action.payload.neweditq;
+            const quizId=action.payload.quizId;
+            console.log ("The edited question is ",neweditq)
+            return {...state,
+                quizzes:state.quizzes.map(quiz=>{
+                    if(quiz.Quizid===quizId){
+                        const editedquestion=quiz.questions.map(question=>{
+                            if(question.quesid===neweditq.quesid){
+                                return neweditq;
+                            }else{
+                                return question;
+                            }
+                        })
+                        console.log(editedquestion);
+                        return{...quiz,questions:editedquestion};
+                    }
+                    return quiz;                    
+                })
+            }
+        },
+        storageLoad(state,action){
+            console.log(action.payload);
+            const storedquiz=action.payload.storedquizzes;
+            console.log("The quiz needed loading is ",storedquiz);
+            return{...state,
+                quizzes:state.quizzes.concat(storedquiz)
+            }
         }
+        
+    }
+})
+           
 
-}})
-
-export const {setQuizzes,createQuiz,updateHighestScore,quizDelete}=hubSlice.actions;
+export const {setQuizzes,createQuiz,updateHighestScore,quizDelete,questionAdd,questionDelete,questionEdit,storageLoad}=hubSlice.actions;
 export default hubSlice.reducer;
 
 
