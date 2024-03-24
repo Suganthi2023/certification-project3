@@ -13,15 +13,23 @@ import { Provider } from 'react-redux'
  * Importing reducers
  */
 import testReducer from './reducers/testReducer.js'
+import hubReducer from './reducers/hubReducer.js'
+import playReducer from './reducers/playReducer.js'
 
 /**
  * Creating the store w/reducers
  */
 const store = configureStore({
   reducer: {
-    test: testReducer
+    test: testReducer,
+    quizzes: hubReducer,
+    play: playReducer
+
+
   }
 })
+
+console.log('store is',store.getState());
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
