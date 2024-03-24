@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import EditQuiz from "./Editquiz";
 import PlayQuiz from "./Playquiz";
 import { useDispatch,useSelector } from "react-redux";
-import {setQuizzes,createQuiz} from "../reducers/hubReducer";
+import {setQuizzes,createQuiz,quizDelete} from "../reducers/hubReducer";
 
 function QuizHub() {
   /*  const [quizzes,setQuizzes]= useState([      //Intial State of the Quizzes. In this state we have predefined quizzes.
@@ -168,7 +168,7 @@ function QuizHub() {
     const deleteQuiz = (Quizid,Qname)=>{
         
         console.log("The quiz getting deleted is:",Qname)
-        const newquizzes = quizzes.filter((quiz)=>{
+        /*const newquizzes = quizzes.filter((quiz)=>{
             if (quiz.name === Qname){
                 return false;
             } else {
@@ -176,7 +176,9 @@ function QuizHub() {
                 return true;
             }
         })
-        setQuizzes(newquizzes);
+        setQuizzes(newquizzes);*/
+        localStorage.removeItem(Qname);
+        dispatch(quizDelete({Qname}))
     }
 
     //Call back function which gets passed to the Editquiz component through router

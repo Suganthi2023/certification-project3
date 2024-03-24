@@ -126,11 +126,24 @@ const hubSlice = createSlice({
                     }
                 })
             }
+        },
+        quizDelete(state,action){
+            console.log(action);
+            const Qname=action.payload.Qname;
+            return{...state,
+                quizzes:state.quizzes.filter(quiz=>{
+                    if(quiz.name===Qname){
+                        return false;
+                    }else{
+                        return true;
+                    }
+                })
+            }
         }
 
 }})
 
-export const {setQuizzes,createQuiz,updateHighestScore}=hubSlice.actions;
+export const {setQuizzes,createQuiz,updateHighestScore,quizDelete}=hubSlice.actions;
 export default hubSlice.reducer;
 
 
