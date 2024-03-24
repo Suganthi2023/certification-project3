@@ -3,9 +3,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import EditQuiz from "./Editquiz";
 import PlayQuiz from "./Playquiz";
+import { useDispatch,useSelector } from "react-redux";
+import {setQuizzes,createQuiz} from "../reducers/hubReducer";
 
 function QuizHub() {
-    const [quizzes,setQuizzes]= useState([      //Intial State of the Quizzes. In this state we have predefined quizzes.
+  /*  const [quizzes,setQuizzes]= useState([      //Intial State of the Quizzes. In this state we have predefined quizzes.
         {
             Quizid:1,
             name:"GeneralKnowledge",
@@ -93,8 +95,9 @@ function QuizHub() {
             ],
             HighestScore:0
         }
-    ])
-
+    ])*/
+    const dispatch=useDispatch();
+    const quizzes=useSelector(state=>{return state.quizhub.quizzes})
     console.log(quizzes);
     //This is the copy of the part of the state which gets used to create a new quiz by the user
     const[newquiz,setNewQuiz]=useState({
@@ -144,15 +147,20 @@ function QuizHub() {
     //intial state of quizzes to reflect the addition to quizzes list.
     const handleCreateQuiz=(e)=>{
         e.preventDefault();
-        const nextId=quizzes.length+1
+        /*const nextId=quizzes.length+1
         const newQuiz={
             Quizid:nextId,
             name:newquiz.name,
             questions:newquiz.questions,
             HighestScore:0
+        }*/
+        const newQuiz={
+            name:newquiz.name,
+            questions:newquiz.questions
         }
-        setQuizzes([...quizzes,newQuiz]);
-        setNewQuiz({name:"",questions:[]})
+        console.log(newQuiz);
+        dispatch(createQuiz({newQuiz}));
+        setNewQuiz({name:"",questions:[]});
     }
 
     //This function to delete the quiz from the state as well as from the local storage when the
@@ -236,7 +244,7 @@ function QuizHub() {
     }   
     
     //Call back function to update the HighestScore for the quiz that gets played by the user.
-    const highScoreupdate =(Quiz,Quizid,highscore)=>{
+    /*const highScoreupdate =(Quiz,Quizid,highscore)=>{
         console.log("the current highestscore is:",Quiz.HighestScore);
         console.log("this is quiz getting update:",Quizid);
         console.log("this is the score getting updated:",highscore);
@@ -249,7 +257,7 @@ function QuizHub() {
             })
             
         })
-    }
+    }*/
 
     //call back function to store the quiz in the local storage when the user clicks save button in the UI
     const saveTostorage=(Quiz)=>{
@@ -302,7 +310,7 @@ return (
             
             {quizzes.map((quiz)=> (
                 <Route key={quiz.Quizid} path={`/QuizHub/${quiz.Quizid}/playquiz`} 
-                element={<PlayQuiz quiz={quiz} quizId={quiz.Quizid} updateHighscore={highScoreupdate}/>}/>
+                element={<PlayQuiz quiz={quiz} quizId={quiz.Quizid} />}/>
             ))}
             {quizzes.map((quiz)=>(
                 <Route key={quiz.Quizid} path={`/QuizHub/${quiz.Quizid}/editquiz`} 

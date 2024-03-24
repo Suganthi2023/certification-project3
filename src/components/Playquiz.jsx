@@ -2,11 +2,12 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import {useSelector,useDispatch} from 'react-redux';
 import {setUserAnswers,setScore} from '../reducers/playReducer'
+import {updateHighestScore} from "../reducers/hubReducer"
 //functional component - child component
 //This displays the quiz selected by the user and lets the user to play the quiz.when answers are
 //submitted by the user, it calculates as well as checks and updates the highestore score which also
 //displays the same respectively.
-function PlayQuiz({quiz,quizId,updateHighscore}) {
+function PlayQuiz({quiz,quizId}) {
     const dispatch=useDispatch();
    //console.log({quiz});
 
@@ -30,7 +31,7 @@ function PlayQuiz({quiz,quizId,updateHighscore}) {
    }
 
    //Function to check the userAnswers with the correctAnswer for the each questions in the quiz
-   const handleanswerCheck=()=>{
+   const handleanswerCheck=(quizId)=>{
        let newScore=0;
       console.log("Quiz Object:",quiz);
        quiz.questions.forEach((question) =>{
@@ -49,7 +50,7 @@ function PlayQuiz({quiz,quizId,updateHighscore}) {
        //this condition calls the updateHighscore function from parent for this purpose and updates the highestscore accordingly 
        //in the state in the parent component.
        if(quiz.HighestScore<=newScore){
-            updateHighscore(quiz,quizId,newScore);
+            dispatch(updateHighestScore({quizId,newScore}));
         } 
         //updating the score state.
        //setScore(newScore);
@@ -83,7 +84,7 @@ function PlayQuiz({quiz,quizId,updateHighscore}) {
                </div>                          
                 ))}
                <div>
-                   <button onClick={handleanswerCheck}>Submit</button>
+                   <button onClick={()=>handleanswerCheck(quizId)}>Submit</button>
                </div>
                <div>
                    Score:{score}

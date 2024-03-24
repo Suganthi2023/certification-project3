@@ -22,7 +22,7 @@ import playReducer from './reducers/playReducer.js'
 const store = configureStore({
   reducer: {
     test: testReducer,
-    quizzes: hubReducer,
+    quizhub: hubReducer,
     play: playReducer
 
 
