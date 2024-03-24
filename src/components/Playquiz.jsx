@@ -1,26 +1,32 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-
+import {useSelector,useDispatch} from 'react-redux';
+import {setUserAnswers,setScore} from '../reducers/playReducer'
 //functional component - child component
 //This displays the quiz selected by the user and lets the user to play the quiz.when answers are
 //submitted by the user, it calculates as well as checks and updates the highestore score which also
 //displays the same respectively.
 function PlayQuiz({quiz,quizId,updateHighscore}) {
-    
+    const dispatch=useDispatch();
    //console.log({quiz});
 
    //State to keep track of user types answers for questions which is used to check the answers with 
    //correct answer for the corresponding questions.
-   const[userAnswers,setUserAnswers]=useState({});
+   //const[userAnswers,setUserAnswers]=useState({});
+     const userAnswers=useSelector(state=>state.play.userAnswers);
+     console.log("The current userAnswers state is ",userAnswers);
 
    //State to keep the score the quiz.
-   const[score,setScore]=useState();
+   //const[score,setScore]=useState();
+     const score = useSelector(state=>state.play.score);
 
    //Function to get the value from the field when the user types the answer and display it in the field.
    const handleAnswerType=(e,quesid)=>{
        e.preventDefault();
        const response= {...userAnswers,[quesid]:e.target.value};
-       setUserAnswers(response);
+       console.log("The user typed this:",response);
+       //setUserAnswers(response);
+       dispatch(setUserAnswers(response));
    }
 
    //Function to check the userAnswers with the correctAnswer for the each questions in the quiz
@@ -46,9 +52,11 @@ function PlayQuiz({quiz,quizId,updateHighscore}) {
             updateHighscore(quiz,quizId,newScore);
         } 
         //updating the score state.
-       setScore(newScore);
+       //setScore(newScore);
        //console.log(newScore);
-       setUserAnswers({});
+       //setUserAnswers({});
+       dispatch(setScore(newScore));
+       dispatch(setUserAnswers({}));
    }
 
   
@@ -64,8 +72,8 @@ function PlayQuiz({quiz,quizId,updateHighscore}) {
                    <h4>Question{question.quesid}</h4> 
                    <h5>{question.question}</h5>                   
                    <ul>
-                       {question.options.map((quesid,option)=> (
-                           <li key={quesid}>{option}</li>
+                       {question.options.map((option,index)=> (
+                           <li key={index}>{option}</li>
                        ))}                        
                    </ul>
                    <br/>

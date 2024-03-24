@@ -1,17 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = '';
+const initialState = {
+    userAnswers:{},
+    score:''
+};
 
 const playSlice = createSlice({
     name:'play',
     initialState,
     reducers: {
-        userAnswers(state,action){
+        setUserAnswers(state,action){
             console.log(action);
-            return state;
+            return {...state,userAnswers:action.payload};
+        },
+        setScore(state,action){
+            console.log(action);
+            return {...state,score:action.payload};
         }
     }
 })
 
-export const {userAnswers} = playSlice.actions;
+export const {setUserAnswers, setScore} = playSlice.actions;
 export default playSlice.reducer;
