@@ -306,7 +306,7 @@ function QuizHub() {
     
 return (
         <>  
-        <h3>DashBoard</h3>
+        
         {/*Dynamic routes to components which also passes the props to the child components*/}
         <Routes>
             
@@ -322,9 +322,11 @@ return (
             
         </Routes>
         
-        <div>
+        <div className="quizlist">
             {/*The interface which displays the list of quiznames with buttons to play,edit,save and delete */}
-            This is the Game Page
+            <h2>DashBoard</h2>
+            <br/>
+            <br/>
             {quizzes.map((quiz)=>(
                 <div key={quiz.Quizid}>
                     <h3>{quiz.Quizid}.{quiz.name}</h3>
@@ -346,13 +348,17 @@ return (
             <button onClick={()=>{loadFromstorage(typeNameload.name)}}>Load</button>
             <p>{quiznotfound}</p>
             </div>
-
-
+            <br/>
+            <br/>
             <h3>Create your Own Quiz</h3>
                 {/*Form with various inputs to create a new quiz */}
-            <form onSubmit={handleCreateQuiz}>
-                <div>
+            <form  onSubmit={handleCreateQuiz}>
+                <div className="QuizName">
                     Quiz Name:<input type="text" name="name" value={newquiz.name} onChange={handleformTyping}/>
+                    <br/>
+                    To add questions to your quiz, press Add Question.After adding questions, press submit to include 
+                        your quiz to the list. 
+                    
                 </div>
                 {newquiz.questions.map((question,index)=>
                  <div key={index}>

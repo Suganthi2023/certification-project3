@@ -12,11 +12,13 @@ import Home from './components/Home'
 import QuizHub from './components/QuizHub'
 import About from './components/About'
 
+
 const App = () => {
   return (
     <Router>
       <div>
         <nav>
+          <h1>Quiz Spectrum</h1>
           <ul>
             <li>
               <Link to="/">Home</Link>
