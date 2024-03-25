@@ -1,8 +1,3 @@
-/**
- * Below is an example of a simple reducer, just added it to get the redux toolkit setup going
- * You'll need to make your own reducers, with actions as well to facilitate redux-toolkit
- */
-
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = ''
