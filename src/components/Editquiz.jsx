@@ -15,7 +15,7 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
         quesid:quiz.questions.length,       
         question:'',
         options:[],
-        correctanswer:'',
+        correctAnswer:'',
         points:''
     });
 
@@ -44,7 +44,7 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
            quesid:newQuestion.quesid+1,
            question:newQuestion.question,
            options:newQuestion.options,
-           correctanswer:newQuestion.correctanswer,
+           correctAnswer:newQuestion.correctAnswer,
            points:newQuestion.points
        }              
         dispatch(questionAdd({quizId,newques}));
@@ -105,7 +105,7 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
         e.preventDefault();
         const neweditq ={
             quesid:editedQuestion.equesid,
-            quesiton:editedQuestion.equestion,
+            question:editedQuestion.equestion,
             options:editedQuestion.eoptions,
             correctAnswer:editedQuestion.ecorrectAnswer,
             points:editedQuestion.epoints
@@ -137,43 +137,52 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
     return (      
         
         <>
-            <div>
+            <div className="editlist">
                 {/*UI to display the questions for the selected quiz for editing, deleting questions and buttons for the same
                 and form fields for adding and editing questions. */}
-            This is to Edit Game
-            {quiz.questions.map((question)=>(
-                <div key={question.quesid}>
-                    <h4>Question{question.quesid}</h4> 
-                    <h5>{question.question}</h5>                   
-                    <ul>
-                        {question.options.map((option,index)=> (
-                            <li key={index}>{option}</li>
-                        ))}                        
-                    </ul>
-                    <button onClick={()=>handleEdit(question)}>Edit</button>
-                    <button onClick={()=>handleDeleteQuestion(question)}>Delete</button> 
-                    <br/>
-                    <br/>
-                </div>                          
-            ))}
-            {/*Form the user to new question to the quiz */}
-            <form onSubmit={handleAddQuestion}>
-                <div>
-                    Question:<input type="text" name="question" value={newQuestion.question} onChange={handleInputType}/>
+                <div className="grd1">
+                    <h2>{quiz.name}</h2>
+                    {quiz.questions.map((question)=>(
+                        <div key={question.quesid}>
+                            <h4>Question{question.quesid}</h4> 
+                            <h5>{question.question}</h5>                   
+                            <ul>
+                                {question.options.map((option,index)=> (
+                                    <li key={index}>{option}</li>
+                                ))}                        
+                            </ul>
+                            <button onClick={()=>handleEdit(question)}>Edit</button>
+                            <button onClick={()=>handleDeleteQuestion(question)}>Delete</button> 
+                            <br/>
+                            <br/>
+                        </div>                          
+                    ))}
                 </div>
-                <div>
-                    Options:<input type="text" name="options" value={newQuestion.options} onChange={handleInputType}/>
-                </div>
-                <div>
-                    CorrectAnswer:<input type="text" name="correctanswer" value={newQuestion.correctanswer} onChange={handleInputType}/>
-                </div>
-                <div>
-                    Points:<input type="text" name="points" value={newQuestion.points} onChange={handleInputType}/>
-                </div>
-                <button type="submit">Submit</button>      
-            </form> 
-            {/*Form for the user to edit an existing question in the quiz */}
-            <form onSubmit={handleEditQuestion}>                        
+                <div className="grd2">
+                    {/*Form the user to new question to the quiz */}
+                    <h3>To Add Question to your Quiz</h3>
+                    <form onSubmit={handleAddQuestion}>
+                        <div>
+                            Question:<input type="text" name="question" value={newQuestion.question} onChange={handleInputType}/>
+                        </div>
+                        <div>
+                            Options:<input type="text" name="options" value={newQuestion.options} onChange={handleInputType}/>
+                        </div>
+                        <div>
+                            CorrectAnswer:<input type="text" name="correctAnswer" value={newQuestion.correctAnswer} onChange={handleInputType}/>
+                        </div>
+                        <div>
+                            Points:<input type="text" name="points" value={newQuestion.points} onChange={handleInputType}/>
+                        </div>
+                        <button type="submit">Submit</button>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <h4>To Edit A Question in the Quiz</h4>
+                        <h5>Press edit button next to the question</h5>
+                    </form> 
+                    {/*Form for the user to edit an existing question in the quiz */}
+                    <form onSubmit={handleEditQuestion}>                        
                     
                         <div>
                             Question:<input type="text" name="equestion" value={editedQuestion.equestion} onChange={handleEditInput}/>
@@ -189,13 +198,15 @@ function EditQuiz({quiz,quizId,addquestion,EditQuestion,DeleteQuestion}) {
                         </div>
                                    
 
-                <button type="submit">Submit</button>
-            </form>
+                     <button type="submit">Submit</button>
+                    </form>
+                </div>
+                    {/*Link to go back to the parent component */}
+                    <Link to ="/QuizHub">
+                    <button>Back to Hub</button>
+                </Link>
             </div>
-            {/*Link to go back to the parent component */}
-            <Link to ="/QuizHub">
-                <button>Back to Home</button>
-            </Link>
+            
 
         </>
         

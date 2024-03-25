@@ -65,40 +65,43 @@ function PlayQuiz({quiz,quizId}) {
    //console.log(quiz.name);
    return (
        <>
-           <div>
-            {/*UI to display the questions, answer form field, submit button, score and Highestscore */}
-             <h2>{quiz.name}</h2> 
-             {quiz.questions.map((question)=>(
-               <div key={question.quesid}>
-                   <h4>Question{question.quesid}</h4> 
-                   <h5>{question.question}</h5>                   
-                   <ul>
-                       {question.options.map((option,index)=> (
-                           <li key={index}>{option}</li>
-                       ))}                        
-                   </ul>
-                   <br/>
-                   <br/>
-                   Enter your Answer:
-                   <input type="text" name={question.quesid} value={userAnswers[question.quesid] !== undefined? userAnswers[question.quesid]:""} onChange={(e)=>handleAnswerType(e,question.quesid)} required/>                 
-               </div>                          
+           <div className="playlist">
+           
+            <div className="grid1">
+                {/*UI to display the questions, answer form field, submit button, score and Highestscore */}
+                <h2>{quiz.name}</h2> 
+                {quiz.questions.map((question)=>(
+                    <div key={question.quesid}>
+                        <h4>Question{question.quesid}</h4> 
+                        <h5>{question.question}</h5>                   
+                        <ul>
+                            {question.options.map((option,index)=> (
+                                <li key={index}>{option}</li>
+                            ))}                        
+                        </ul>
+                        <br/>
+                        <br/>
+                        Enter your Answer:
+                        <input type="text" name={question.quesid} value={userAnswers[question.quesid] !== undefined? userAnswers[question.quesid]:""} onChange={(e)=>handleAnswerType(e,question.quesid)} required/>                 
+                    </div>                          
                 ))}
                <div>
                    <button onClick={()=>handleanswerCheck(quizId)}>Submit</button>
                </div>
-               <div>
+            </div>
+               <div className="grid2">
                    Score:{score}
                    <br/>
                    HighestScore:{quiz.HighestScore}
                   
                </div>
-            
+                {/*Link to the parent component */}
+                 <Link to ="/QuizHub">
+                    <button>Back to Hub</button>
+                </Link>
 
            </div>
-           {/*Link to the parent component */}
-           <Link to ="/QuizHub">
-               <button>Back to Hub</button>
-           </Link>
+           
 
        </>
        
