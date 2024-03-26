@@ -20,6 +20,5 @@ Quiz Spectrum offers a diverse range of quizzes for you to enjoy. Whether you're
 - VS Code and Git Bash
 - Coding in Colors Youtube lectures
 - www.w3schools.com 
-- Youtube Tutorials(for the cube on nav bar and spinning game thumbnails)
 - React Documentation
 - msd Documentation
